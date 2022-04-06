@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to Support Desk API' });
+  res.status(200).json({ message: 'Bem-Vindo(a) ao Support Desk API' });
 });
 
 // Routes
@@ -22,6 +22,6 @@ app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server Running on PORT ${PORT}`));
 
-// 122. 9:40
+//
 
 // https://www.npmjs.com/package/express-async-handler

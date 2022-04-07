@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { login } from '../features/auth/authSlice';
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const { name, email, password, password2 } = formData;
+  const { email, password } = formData;
 
   const onChange = e => {
     setFormData(prevState => ({
@@ -19,6 +23,11 @@ const Login = () => {
 
   const onSubmit = e => {
     e.preventDefault();
+    const userData = {
+      email,
+      password,
+    };
+    dispatch(login(userData));
   };
 
   return (
@@ -40,7 +49,7 @@ const Login = () => {
               value={email}
               onChange={onChange}
               placeholder="Digite seu email"
-              require
+              required
             />
           </div>
           <div className="form-group">
@@ -52,7 +61,7 @@ const Login = () => {
               value={password}
               onChange={onChange}
               placeholder="Digite sua senha"
-              require
+              required
             />
           </div>
           <div className="form-group">

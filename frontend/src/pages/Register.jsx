@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { register } from '../features/auth/authSlice';
 
 const Register = () => {
+  const { user, isError, isLoading, message } = useSelector(
+    state => state.auth
+  );
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,6 +31,13 @@ const Register = () => {
 
     if (password !== password2) {
       toast.error('Senhas não conferem');
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+      dispatch(register(userData));
     }
   };
 
@@ -46,7 +60,7 @@ const Register = () => {
               value={name}
               onChange={onChange}
               placeholder="Digite seu nome"
-              require
+              required
             />
           </div>
           <div className="form-group">
@@ -58,7 +72,7 @@ const Register = () => {
               value={email}
               onChange={onChange}
               placeholder="Digite seu email"
-              require
+              required
             />
           </div>
           <div className="form-group">
@@ -70,7 +84,7 @@ const Register = () => {
               value={password}
               onChange={onChange}
               placeholder="Digite sua senha"
-              require
+              required
             />
           </div>
           <div className="form-group">
@@ -82,7 +96,7 @@ const Register = () => {
               value={password2}
               onChange={onChange}
               placeholder="Confirme sua senha"
-              require
+              required
             />
           </div>
           <div className="form-group">

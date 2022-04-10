@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { login } from '../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, reset } from '../features/auth/authSlice';
+import Spinner from '../components/Spinner';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isError, isLoading, isSuccess, message } = useSelector(
+    state => state.auth
+  );
 
   const [formData, setFormData] = useState({
     email: '',
@@ -13,6 +19,18 @@ const Login = () => {
   });
 
   const { email, password } = formData;
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [isError, message, isSuccess, navigate, user, dispatch]);
 
   const onChange = e => {
     setFormData(prevState => ({
@@ -29,6 +47,10 @@ const Login = () => {
     };
     dispatch(login(userData));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>

@@ -1,19 +1,44 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { reset, createTicket } from '../features/tickets/ticketSlice';
+import { toast } from 'react-toastify';
+import Spinner from '../components/Spinner';
+import BackButton from '../components/BackButton';
 
 const NewTicket = () => {
   const { user } = useSelector(state => state.auth);
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    state => state.tickets
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [name] = useState(user.name);
+  const [email] = useState(user.email);
   const [product, setProduct] = useState('iPhone');
   const [description, setDescription] = useState('');
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess) {
+      dispatch(reset);
+      navigate('/tickets');
+    }
+    dispatch(reset());
+  }, [isError, message, isSuccess, navigate, dispatch]);
+
   const onSubmit = e => {
     e.preventDefault();
+    dispatch(createTicket({ product, description }));
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
+      <BackButton url="/" />
       <section className="heading">
         <h1>Criar Novo Chamado</h1>
         <p>Complete todos os campos abaixo</p>

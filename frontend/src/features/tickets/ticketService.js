@@ -26,9 +26,43 @@ const fetchTickets = async token => {
   return response.data;
 };
 
+// Get Ticket
+const fetchTicket = async (ticketId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(`/api/tickets/${ticketId}`, config);
+
+  return response.data;
+};
+
+// Close Ticket
+const updateTicket = async (ticketId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.put(
+    `/api/tickets/${ticketId}`,
+    {
+      status: 'closed',
+    },
+    config
+  );
+
+  return response.data;
+};
+
 const ticketService = {
   createTicket,
   fetchTickets,
+  fetchTicket,
+  updateTicket,
 };
 
 export default ticketService;

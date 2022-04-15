@@ -22,7 +22,7 @@ const Header = () => {
       <ul>
         {user ? (
           <button onClick={onLogout} className="btn">
-            <FaSignInAlt /> Sair
+            <FaSignOutAlt /> Sair
           </button>
         ) : (
           <>
